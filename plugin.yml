@@ -1,0 +1,7 @@
+---
+name: Bedwars
+version: 0.0.1
+main: VietnamPMTeam\Bedwars\Loader
+api: 4.0.0
+description: A minigame plugin for PocketMine-MP
+...
