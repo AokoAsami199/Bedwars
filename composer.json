@@ -1,8 +1,25 @@
 {
+    "name": "vietnampmteam/bedwars",
+    "description": "A minigame plugin for PocketMine-MP",
+    "type": "project",
     "require": {
         "pocketmine/pocketmine-mp": "^4.2",
         "sof3/libasynql": "^4.0",
         "sof3/await-generator": "^3.4",
         "friendsofphp/php-cs-fixer": "^3.8"
-    }
+    },
+    "autoload": {
+        "psr-0": {
+            "VietnamPMTeam\\Bedwars\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mcbeany",
+            "email": "mcbeany7@gmail.com"
+        },
+        {
+            "name": "NgLamVN"
+        }
+    ]
 }

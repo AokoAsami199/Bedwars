@@ -9,8 +9,9 @@ use poggit\libasynql\DataConnector;
 use poggit\libasynql\libasynql;
 use SOFe\AwaitGenerator\Await;
 use VietnamPMTeam\Bedwars\Loader;
+use VietnamPMTeam\Bedwars\Utils\Closable;
 
-class libasynqlDatabase {
+class libasynqlDatabase implements Closable{
 	protected DataConnector $connector;
 
 	protected const AREAS_INIT = "bedwars.areas.init";

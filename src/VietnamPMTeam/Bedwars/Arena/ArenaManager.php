@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace VietnamPMTeam\Bedwars\Arena;
 
-use pocketmine\Server;
 use VietnamPMTeam\Bedwars\Utils\SingletonTrait;
 use function array_rand;
 
@@ -50,7 +49,7 @@ final class ArenaManager{
 		return new Arena(
 			$identifier,
 			$data->displayName,
-			Server::getInstance()->getWorldManager()->getWorldByName($data->world)
+			$this->plugin->getServer()->getWorldManager()->getWorldByName($data->world)
 		);
 	}
 }

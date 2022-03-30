@@ -10,11 +10,12 @@ use VietnamPMTeam\Bedwars\Provider\Databases\Database;
 use VietnamPMTeam\Bedwars\Provider\Databases\JsonDatabase;
 use VietnamPMTeam\Bedwars\Provider\Databases\libasynqlDatabase;
 use VietnamPMTeam\Bedwars\Provider\Databases\YamlDatabase;
+use VietnamPMTeam\Bedwars\Utils\Closable;
 use VietnamPMTeam\Bedwars\Utils\Configuration;
 use VietnamPMTeam\Bedwars\Utils\SingletonTrait;
 use VietnamPMTeam\Bedwars\Utils\StructParser;
 
-final class DataProvider{
+final class DataProvider implements Closable{
 	use SingletonTrait;
 
 	protected Database $arenaDatabase;

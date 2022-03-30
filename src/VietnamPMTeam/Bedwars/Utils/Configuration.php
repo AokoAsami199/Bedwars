@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VietnamPMTeam\Bedwars\Utils;
 
-final class Configuration{
+final class Configuration implements Closable{
 	use SingletonTrait;
 
 	public array $database;
