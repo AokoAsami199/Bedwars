@@ -11,6 +11,9 @@ use ReflectionProperty;
  * Copied from Endermanbug ConfigStruct xD
  */
 final class StructParser{
+	/**
+	 * @throws \ReflectionException
+	 */
 	public static function parse(object $object, array $data) : object{
 		$reflection = new ReflectionClass($object);
 		foreach($data as $key => $value){

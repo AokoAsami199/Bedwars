@@ -44,6 +44,25 @@ class libasynqlDatabase implements Closable{
 		return yield Await::ONCE;
 	}
 
+	public function AreasSelectAll() : Generator{
+		return yield $this->asyncSelect(self::AREAS_SELECT_ALL);
+	}
+
+	public function AreasSelectId(string $id) : Generator{
+		return yield $this->asyncSelect(self::AREAS_SELECT_ID, ["id" => $id]);
+	}
+
+	public function AreasSelectDisplayName(string $displayName) : Generator{
+		return yield $this->asyncSelect(self::AREAS_SELECT_DISPLAYNAME, ["displayName" => $displayName]);
+	}
+
+	public function AreasSelectWorldName(string $worldName) : Generator{
+		return yield $this->asyncSelect(self::AREAS_SELECT_WORLDNAME, ["worldName" => $worldName]);
+	}
+
+	public function AreasCreate(string $id, string $displayName, string $worldName){
+	}
+
 	public function close() : void{
 		$this->connector->close();
 	}
