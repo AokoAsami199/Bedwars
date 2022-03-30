@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VietnamPMTeam\Bedwars\Arena;
 
+use pocketmine\Server;
 use VietnamPMTeam\Bedwars\Utils\SingletonTrait;
 
 final class ArenaManager{
@@ -36,11 +37,19 @@ final class ArenaManager{
 		return empty($this->arenas) ? null : $this->arenas[array_rand($this->arenas)];
 	}
 
-	public function addArena(Arena $arena) : void{
+	public function registerArena(Arena $arena) : void{
 		$this->arenas[$arena->getIdentifier()] = $arena;
 	}
 
-	public function removeArena(string $identifier) : void{
+	public function unregisterArena(string $identifier) : void{
 		unset($this->arenas[$identifier]);
+	}
+	
+	public function createFromData(string $identifier, ArenaData $data) : Arena{
+		return new Arena(
+			$identifier,
+			$data->displayName,
+			Server::getInstance()->getWorldManager()->getWorldByName($data->world)
+		);
 	}
 }

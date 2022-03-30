@@ -5,20 +5,17 @@ declare(strict_types=1);
 namespace VietnamPMTeam\Bedwars\Arena;
 
 use pocketmine\Server;
+use pocketmine\utils\Filesystem;
 use pocketmine\world\World;
 
 class Arena{
-	protected string $displayName;
-	protected World $world;
+    protected ?World $clonedWorld = null;
 
-	/**
-	 * @param array<string, mixed> $rawData
-	 */
 	public function __construct(
 		protected string $identifier,
-		protected array $rawData
+		protected string $displayName,
+		protected World $world
 	){
-		$this->parseData();
 	}
 
 	public function getIdentifier() : string{
@@ -37,18 +34,37 @@ class Arena{
 		return $this->world;
 	}
 
-	public function getFileName() : string{
-		return $this->fileName;
-	}
+	public function getClonedWorld(): ?World{
+        return $this->clonedWorld;
+    }
 
-	public function parseData() : void{
-		$this->displayName = $this->rawData["displayName"];
-		$this->world = Server::getInstance()->getWorldManager()->getWorldByName($this->rawData["world"]);
-	}
+    public function cloneWorld(): void{
+        if($this->world->isLoaded()){
+            $this->world->save();
+        }
+        $dataPath = Server::getInstance()->getDataPath();
+        $worldName = $this->world->getFolderName();
+        $newWorldName = uniqid($worldName);
+        Filesystem::recursiveCopy($dataPath . $worldName, $dataPath . $newWorldName);
+        Server::getInstance()->getWorldManager()->loadWorld($newWorldName);
+        $this->clonedWorld = Server::getInstance()->getWorldManager()->getWorldByName($newWorldName);
+    }
 
-	public function saveData() : array{
-		$this->rawData["displayName"] = $this->displayName;
-		$this->rawData["world"] = $this->world->getFolderName();
-		return $this->rawData;
-	}
+    public function resetWorld(): void{
+        if($this->clonedWorld === null){
+            return;
+        }
+        if($this->clonedWorld->isLoaded()){
+            Server::getInstance()->getWorldManager()->unloadWorld($this->clonedWorld, true);
+        }
+        Filesystem::recursiveUnlink(Server::getInstance()->getDataPath() . $this->clonedWorld->getFolderName());
+        $this->clonedWorld = null;
+    }
+
+	public function saveData(): ArenaData{
+        $data = new ArenaData;
+        $data->displayName = $this->displayName;
+        $data->worldName = $this->world->getFolderName();
+        return $data;
+    }
 }

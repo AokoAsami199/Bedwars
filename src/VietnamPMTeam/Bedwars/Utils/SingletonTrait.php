@@ -20,6 +20,13 @@ trait SingletonTrait{
 		return static::$instance;
 	}
 
+	/**
+	 * @param static $instance
+	 */
+	protected static function setInstance($instance) : void{
+		static::$instance = $instance;
+	}
+
 	public function getPlugin() : Loader{
 		return $this->plugin;
 	}

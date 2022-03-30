@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VietnamPMTeam\Bedwars\Provider;
 
-use VietnamPMTeam\Bedwars\Arena\Arena;
+use VietnamPMTeam\Bedwars\Arena\ArenaData;
 use VietnamPMTeam\Bedwars\Arena\ArenaManager;
 use VietnamPMTeam\Bedwars\Provider\Databases\Database;
 use VietnamPMTeam\Bedwars\Provider\Databases\JsonDatabase;
@@ -12,6 +12,7 @@ use VietnamPMTeam\Bedwars\Provider\Databases\libasynqlDatabase;
 use VietnamPMTeam\Bedwars\Provider\Databases\YamlDatabase;
 use VietnamPMTeam\Bedwars\Utils\Configuration;
 use VietnamPMTeam\Bedwars\Utils\SingletonTrait;
+use VietnamPMTeam\Bedwars\Utils\StructParser;
 
 final class DataProvider{
 	use SingletonTrait;
@@ -19,7 +20,7 @@ final class DataProvider{
 	protected Database $arenaDatabase;
 
 	protected function onInit() : void{
-		$arenaDBType = Configuration::getInstance()->database_type();
+		$arenaDBType = Configuration::getInstance()->database["type"];
 		$this->arenaDatabase = match ($arenaDBType) {
 			Database::TYPE_JSON => new JsonDatabase($this->plugin, Database::ARENAS),
 			Database::TYPE_YAML => new YamlDatabase($this->plugin, Database::ARENAS),
@@ -34,13 +35,18 @@ final class DataProvider{
 
 	protected function loadArenas() : void{
 		$this->arenaDatabase->load(function(string $identifier, array $data){
-			ArenaManager::getInstance()->addArena(new Arena($identifier, $data));
+			ArenaManager::getInstance()->registerArena(
+				ArenaManager::getInstance()->createFromData($identifier, StructParser::parse(new ArenaData, $data))
+			);
 		});
 	}
 
 	protected function saveArenas() : void{
 		foreach(ArenaManager::getInstance()->getArenas() as $arena){
-			$this->arenaDatabase->save($arena->getIdentifier(), $arena->saveData());
+			$this->arenaDatabase->save(
+				$arena->getIdentifier(),
+				StructParser::emit($arena->saveData())
+			);
 		}
 	}
 
