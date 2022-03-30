@@ -10,19 +10,19 @@ use VietnamPMTeam\Bedwars\Provider\DataProvider;
 use VietnamPMTeam\Bedwars\Utils\Configuration;
 
 class Loader extends PluginBase{
-	public const CLASSES = [
-		Configuration::class,
-		ArenaManager::class,
-		DataProvider::class
-	];
+    public const CLASSES = [
+        Configuration::class,
+        ArenaManager::class,
+        DataProvider::class
+    ];
 
-	protected function onEnable() : void{
-		foreach(self::CLASSES as $class){
-			$class::init($this);
-		}
-	}
+    protected function onEnable(): void{
+        foreach(self::CLASSES as $class){
+            $class::init($this);
+        }
+    }
 
-	protected function onDisable() : void{
-		DataProvider::getInstance()->close();
-	}
+    protected function onDisable(): void{
+        DataProvider::getInstance()->close();
+    }
 }
