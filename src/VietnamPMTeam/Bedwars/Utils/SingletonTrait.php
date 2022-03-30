@@ -11,21 +11,22 @@ trait SingletonTrait{
 	/** @var static */
 	private static $instance;
 
-    final public function __construct(
+	final public function __construct(
 		protected Loader $plugin
-	){}
+	){
+	}
 
-	public static function getInstance(): static{
+	public static function getInstance() : static{
 		return static::$instance;
 	}
 
-    public function getPlugin(): Loader{
-        return $this->plugin;
-    }
+	public function getPlugin() : Loader{
+		return $this->plugin;
+	}
 
-	protected function onInit(): void{}
+	protected function onInit() : void{ }
 
-	public static function init(Loader $plugin): void{
+	public static function init(Loader $plugin) : void{
 		(static::$instance = new self($plugin))->onInit();
 	}
 }

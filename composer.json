@@ -1,7 +1,7 @@
 {
-    "require": {
-        "pocketmine/pocketmine-mp": "^4.2",
-        "sof3/libasynql": "^4.0",
-        "sof3/await-generator": "^3.4"
-    }
+	"require": {
+		"pocketmine/pocketmine-mp": "^4.2",
+		"sof3/libasynql": "^4.0",
+		"sof3/await-generator": "^3.4"
+	}
 }
