@@ -33,6 +33,8 @@ trait SingletonTrait{
 
 	protected function onInit() : void{ }
 
+	public function close() : void{ }
+
 	public static function init(Loader $plugin) : void{
 		(static::$instance = new self($plugin))->onInit();
 	}

@@ -13,4 +13,9 @@ final class Configuration{
 		$this->plugin->saveDefaultConfig();
 		self::setInstance(StructParser::parse($this, $this->plugin->getConfig()->getAll()));
 	}
+
+	public function close() : void{
+		$this->plugin->getConfig()->setAll(StructParser::emit($this));
+		$this->plugin->saveConfig();
+	}
 }

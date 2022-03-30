@@ -23,6 +23,8 @@ class Loader extends PluginBase{
 	}
 
 	protected function onDisable() : void{
-		DataProvider::getInstance()->close();
+		foreach(self::CLASSES as $class){
+			$class::getInstance()->close();
+		}
 	}
 }
