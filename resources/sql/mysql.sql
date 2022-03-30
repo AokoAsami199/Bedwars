@@ -1,43 +1,46 @@
 -- #! mysql
 -- #{ bedwars
--- #    { arenas
--- #        { create
-CREATE TABLE IF NOT EXISTS bedwars_arenas(
-    identifier  VARCHAR(48)  PRIMARY KEY,
+-- #    { areas
+-- #        { init
+CREATE TABLE IF NOT EXISTS bedwars_areas(
+    id          VARCHAR(256) PRIMARY KEY NOT NULL,
     displayName VARCHAR(64)  NOT NULL,
-    world       VARCHAR(256) NOT NULL
-);
+    worldName   VARCHAR(256) NOT NULL
+    );
 -- #        }
 -- #        { select
-SELECT * FROM bedwars_arenas;
+-- #            { all
+SELECT * FROM bedwars_areas;
+-- #            }
+-- #            { id
+-- #                :id string
+SELECT * FROM bedwars_areas WHERE id = :id;
+-- #            }
+-- #            { displayName
+-- #                :displayName string
+SELECT * FROM bedwars_areas WHERE displayName = :displayName;
+-- #            }
+-- #            { worldName
+-- #                :worldName string
+SELECT * FROM bedwars_areas WHERE worldName = :worldName;
+-- #            }
 -- #        }
--- #        { selectExists
--- #          :identifier string
-SELECT * FROM bedwars_arenas
-WHERE identifier = :identifier;
+-- #        { remove
+-- #            :id string
+DELETE FROM bedwars_areas WHERE id = :id;
 -- #        }
--- #        { insert
--- #          :identifier string
--- #          :displayName string
--- #          :world string
-INSERT INTO bedwars_arenas(
-    identifier,
-    displayName,
-    world
-) VALUES (
-    :identifier,
-    :displayName,
-    :world
-);
+-- #        { create
+-- #            :id string
+-- #            :displayName string
+-- #            :worldName string
+INSERT OR REPLACE INTO bedwars_areas (id, displayName, worldName) VALUES (:id, :displayName, :worldName);
 -- #        }
 -- #        { update
--- #          :identifier string
--- #          :displayName string
--- #          :world string
-UPDATE bedwars_arenas
-SET displayName = :displayName,
-    world = :world
-WHERE identifier = :identifier;
+-- #            { displayName
+-- #                :id string
+-- #                :displayName string
+UPDATE bedwars_areas SET displayName = :displayName WHERE id = :id;
+-- #            }
 -- #        }
 -- #    }
 -- #}

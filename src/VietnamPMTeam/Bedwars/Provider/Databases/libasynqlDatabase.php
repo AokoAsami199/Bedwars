@@ -9,12 +9,15 @@ use poggit\libasynql\DataConnector;
 use poggit\libasynql\libasynql;
 use VietnamPMTeam\Bedwars\Loader;
 
-class libasynqlDatabase extends Database{
+class libasynqlDatabase{
 	protected DataConnector $connector;
+
+	protected const AREAS_CREATE = "bedwars.areas.create";
+	protected const AREAS_SELECT = "bedwars.areas.select";
+	protected const AREAS_SELECT_EXIST = "bedwars.areas.selectExists";
 
 	public function __construct(
 		protected Loader $plugin,
-		protected string $tableName,
 		protected string $sqlType
 	){
 		$sqlMap = [
@@ -22,10 +25,12 @@ class libasynqlDatabase extends Database{
 			Database::TYPE_SQLITE => Database::SQL . Database::TYPE_SQLITE . ".sql",
 		];
 		$this->connector = libasynql::create($plugin, [], $sqlMap);
-		$this->connector->executeGeneric("bedwars.$tableName.create");
+		$this->connector->executeGeneric(self::AREAS_CREATE);
 	}
 
-	public function load(Closure $callback) : void{
+
+
+	public function oldload(Closure $callback) : void{
 		$this->connector->executeSelect(
 			"bedwars." . $this->tableName . ".select",
 			[],
@@ -37,7 +42,7 @@ class libasynqlDatabase extends Database{
 		);
 	}
 
-	public function save(string $identifier, array $data) : void{
+	public function oldsave(string $identifier, array $data) : void{
 		$identifierData = ["identifier" => $identifier];
 		$this->connector->executeSelect(
 			"bedwars." . $this->tableName . ".selectExists",
