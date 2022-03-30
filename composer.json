@@ -2,6 +2,7 @@
     "require": {
         "pocketmine/pocketmine-mp": "^4.2",
         "sof3/libasynql": "^4.0",
-        "sof3/await-generator": "^3.4"
+        "sof3/await-generator": "^3.4",
+        "friendsofphp/php-cs-fixer": "^3.8"
     }
 }

@@ -6,6 +6,7 @@ namespace VietnamPMTeam\Bedwars\Arena;
 
 use pocketmine\Server;
 use VietnamPMTeam\Bedwars\Utils\SingletonTrait;
+use function array_rand;
 
 final class ArenaManager{
 	use SingletonTrait;
@@ -44,7 +45,7 @@ final class ArenaManager{
 	public function unregisterArena(string $identifier) : void{
 		unset($this->arenas[$identifier]);
 	}
-	
+
 	public function createFromData(string $identifier, ArenaData $data) : Arena{
 		return new Arena(
 			$identifier,

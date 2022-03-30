@@ -6,6 +6,12 @@ namespace VietnamPMTeam\Bedwars\Provider\Databases;
 
 use Closure;
 use VietnamPMTeam\Bedwars\Loader;
+use function basename;
+use function file_get_contents;
+use function file_put_contents;
+use function glob;
+use function json_decode;
+use function json_encode;
 
 class JsonDatabase extends FileDatabase{
 	public function __construct(

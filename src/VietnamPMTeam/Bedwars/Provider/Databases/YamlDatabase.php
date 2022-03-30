@@ -6,6 +6,10 @@ namespace VietnamPMTeam\Bedwars\Provider\Databases;
 
 use Closure;
 use VietnamPMTeam\Bedwars\Loader;
+use function basename;
+use function glob;
+use function yaml_emit_file;
+use function yaml_parse_file;
 
 class YamlDatabase extends FileDatabase{
 	public function __construct(
