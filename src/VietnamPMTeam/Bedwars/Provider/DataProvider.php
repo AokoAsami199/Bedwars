@@ -17,7 +17,7 @@ use VietnamPMTeam\Bedwars\Utils\StructParser;
 final class DataProvider{
 	use SingletonTrait;
 
-	protected Database $arenaDatabase;
+	protected Database|libasynqlDatabase $arenaDatabase;
 
 	protected function onInit() : void{
 		$arenaDBType = Configuration::getInstance()->database["type"];
@@ -26,7 +26,6 @@ final class DataProvider{
 			Database::TYPE_YAML => new YamlDatabase($this->plugin, Database::ARENAS),
 			Database::TYPE_MYSQL, Database::TYPE_SQLITE => new libasynqlDatabase(
 				$this->plugin,
-				Database::ARENAS,
 				$arenaDBType
 			)
 		};
