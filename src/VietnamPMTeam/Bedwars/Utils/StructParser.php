@@ -14,7 +14,7 @@ final class StructParser{
 	/**
 	 * @throws \ReflectionException
 	 */
-	public static function parse(object $object, array $data) : object{
+	public static function parse(object $object, array $data) : void{
 		$reflection = new ReflectionClass($object);
 		foreach($data as $key => $value){
 			$property = $reflection->getProperty($key);
@@ -24,7 +24,6 @@ final class StructParser{
 			$property->setAccessible(true);
 			$property->setValue($object, $value);
 		}
-		return $object;
 	}
 
 	public static function emit(object $object) : array{

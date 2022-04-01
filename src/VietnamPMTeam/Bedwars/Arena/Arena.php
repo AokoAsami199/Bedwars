@@ -68,4 +68,8 @@ class Arena{
 		$data->worldName = $this->world->getFolderName();
 		return $data;
 	}
+
+	public static function parseIdentifier(string $displayName) : string{
+		return mb_strtolower(str_replace(" ", "_", preg_replace("/[^a-zA-Z]+/", "", $displayName)));
+	}
 }

@@ -35,8 +35,10 @@ final class DataProvider implements Closable{
 
 	protected function loadArenas() : void{
 		$this->arenaDatabase->load(function(string $identifier, array $data){
+			$arenaData = new ArenaData;
+			StructParser::parse($arenaData, $data);
 			ArenaManager::getInstance()->registerArena(
-				ArenaManager::getInstance()->createFromData($identifier, StructParser::parse(new ArenaData, $data))
+				ArenaManager::getInstance()->createFromData($identifier, $arenaData)
 			);
 		});
 	}

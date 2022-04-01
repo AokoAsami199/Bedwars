@@ -11,7 +11,7 @@ final class Configuration implements Closable{
 
 	protected function onInit() : void{
 		$this->plugin->saveDefaultConfig();
-		self::setInstance(StructParser::parse($this, $this->plugin->getConfig()->getAll()));
+		StructParser::parse($this, $this->plugin->getConfig()->getAll());
 	}
 
 	public function close() : void{
