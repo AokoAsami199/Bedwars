@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace VietnamPMTeam\Bedwars\Provider;
 
-use VietnamPMTeam\Bedwars\Arena\Arena;
 use VietnamPMTeam\Bedwars\Arena\ArenaData;
 use VietnamPMTeam\Bedwars\Arena\ArenaManager;
 use VietnamPMTeam\Bedwars\Provider\Databases\Database;
