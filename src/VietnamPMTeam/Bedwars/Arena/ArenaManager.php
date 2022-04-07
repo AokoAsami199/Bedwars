@@ -10,21 +10,21 @@ use function array_rand;
 final class ArenaManager{
 	use SingletonTrait;
 
-	/** @var array<string, Arena> */
+	/** @var array<string, IArena> */
 	protected array $arenas = [];
 
 	/**
-	 * @return array<string, Arena>
+	 * @return array<string, IArena>
 	 */
 	public function getArenas() : array{
 		return $this->arenas;
 	}
 
-	public function getArena(string $identifier) : ?Arena{
+	public function getArena(string $identifier) : ?IArena{
 		return $this->arenas[$identifier] ?? null;
 	}
 
-	public function getArenaByName(string $displayName) : ?Arena{
+	public function getArenaByName(string $displayName) : ?IArena{
 		foreach($this->arenas as $arena){
 			if($arena->getDisplayName() === $displayName){
 				return $arena;
@@ -33,23 +33,22 @@ final class ArenaManager{
 		return null;
 	}
 
-	public function getRandomArena() : ?Arena{
+	public function getRandomArena() : ?IArena{
 		return empty($this->arenas) ? null : $this->arenas[array_rand($this->arenas)];
 	}
 
-	public function registerArena(Arena $arena) : void{
-		$this->arenas[$arena->getIdentifier()] = $arena;
+	public function registerArena(string $identifier, IArena $arena) : void{
+		$this->arenas[$identifier] = $arena;
 	}
 
 	public function unregisterArena(string $identifier) : void{
 		unset($this->arenas[$identifier]);
 	}
 
-	public function createFromData(string $identifier, ArenaData $data) : Arena{
+	public function createFromData(ArenaData $data) : Arena{
 		return new Arena(
-			$identifier,
 			$data->displayName,
-			$this->plugin->getServer()->getWorldManager()->getWorldByName($data->world)
+			$this->plugin->getServer()->getWorldManager()->getWorldByName($data->worldName)
 		);
 	}
 }

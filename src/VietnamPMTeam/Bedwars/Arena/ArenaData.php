@@ -6,5 +6,5 @@ namespace VietnamPMTeam\Bedwars\Arena;
 
 class ArenaData{
 	public string $displayName;
-	public string $world;
+	public string $worldName;
 }

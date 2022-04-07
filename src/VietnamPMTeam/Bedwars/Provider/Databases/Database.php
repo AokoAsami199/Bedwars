@@ -12,8 +12,8 @@ abstract class Database{
 	public const TYPE_MYSQL = "mysql";
 	public const TYPE_SQLITE = "sqlite";
 
-	public const SQL = "sql";
-	public const ARENAS = "arenas";
+	public const SQL = "sql" . DIRECTORY_SEPARATOR;
+	public const ARENAS = "arenas" . DIRECTORY_SEPARATOR;
 
 	/**
 	 * @param Closure(string, array): void $callback

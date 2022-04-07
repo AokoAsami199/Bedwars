@@ -11,30 +11,29 @@ use ReflectionProperty;
  * Copied from Endermanbug ConfigStruct xD
  */
 final class StructParser{
-	/**
-	 * @throws \ReflectionException
-	 */
 	public static function parse(object $object, array $data) : void{
-		$reflection = new ReflectionClass($object);
-		foreach($data as $key => $value){
-			$property = $reflection->getProperty($key);
-			if(!$property->isPublic() || $property->isStatic()){
+		foreach(self::properties($object) as $property){
+			$name = $property->getName();
+			if(!isset($data[$name])){
 				continue;
 			}
 			$property->setAccessible(true);
-			$property->setValue($object, $value);
+			$property->setValue($object, $data[$name]);
 		}
 	}
 
 	public static function emit(object $object) : array{
 		$data = [];
-		foreach((new ReflectionClass($object))->getProperties(ReflectionProperty::IS_PUBLIC) as $property){
-			if($property->isStatic()){
-				continue;
-			}
+		foreach(self::properties($object) as $property){
 			$property->setAccessible(true);
 			$data[$property->getName()] = $property->getValue($object);
 		}
 		return $data;
+	}
+
+	public static function properties(object $object) : array{
+		return (new ReflectionClass($object))->getProperties(
+			ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_STATIC
+		);
 	}
 }

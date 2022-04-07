@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VietnamPMTeam\Bedwars\Provider\Databases;
 
+use Closure;
 use Generator;
 use poggit\libasynql\DataConnector;
 use poggit\libasynql\libasynql;
@@ -11,32 +12,42 @@ use SOFe\AwaitGenerator\Await;
 use VietnamPMTeam\Bedwars\Loader;
 use VietnamPMTeam\Bedwars\Utils\Closable;
 
-class libasynqlDatabase implements Closable{
+class libasynqlDatabase extends Database implements Closable{
 	protected DataConnector $connector;
 
-	protected const AREAS_INIT = "bedwars.areas.init";
-	protected const AREAS_SELECT_ALL = "bedwars.areas.select.all";
-	protected const AREAS_SELECT_ID = "bedwars.areas.select.id";
-	protected const AREAS_SELECT_DISPLAYNAME = "bedwars.areas.select.displayName";
-	protected const AREAS_SELECT_WORLDNAME = "bedwars.areas.select.worldName";
-	protected const AREAS_REMOVE = "bedwars.areas.remove";
-	protected const AREAS_CREATE = "bedwars.areas.create";
-	protected const AREAS_UPDATE_DISPLAYNAME = "bedwars.areas.update.displayName";
+	protected const ARENAS_INIT = "bedwars.arenas.init";
+	protected const ARENAS_SELECT_ALL = "bedwars.arenas.select.all";
+	protected const ARENAS_SELECT_ID = "bedwars.arenas.select.id";
+	protected const ARENAS_SELECT_DISPLAYNAME = "bedwars.arenas.select.displayName";
+	protected const ARENAS_SELECT_WORLDNAME = "bedwars.arenas.select.worldName";
+	protected const ARENAS_REMOVE = "bedwars.arenas.remove";
+	protected const ARENAS_SAVE = "bedwars.arenas.save";
+	protected const ARENAS_UPDATE_DISPLAYNAME = "bedwars.arenas.update.displayName";
 
 	public function __construct(
-		protected Loader $plugin,
-		protected string $sqlType
+		Loader $plugin
 	){
-		//NOOP
-	}
-
-	public function load() : void{
 		$sqlMap = [
 			Database::TYPE_MYSQL => Database::SQL . Database::TYPE_MYSQL . ".sql",
 			Database::TYPE_SQLITE => Database::SQL . Database::TYPE_SQLITE . ".sql",
 		];
-		$this->connector = libasynql::create($this->plugin, [], $sqlMap);
-		$this->connector->executeGeneric(self::AREAS_INIT);
+		$this->connector = libasynql::create($plugin, $plugin->getConfig()->get("database"), $sqlMap);
+		$this->connector->executeGeneric(self::ARENAS_INIT);
+	}
+
+	public function load(Closure $callback) : void{
+		Await::f2c(function() use($callback) : Generator{
+			$rows = yield from $this->arenasSelectAll();
+			foreach($rows as $data){
+				$callback($data["identifier"], $data);
+			}
+		});
+	}
+
+	public function save(string $identifier, array $data) : void{
+		Await::f2c(function() use($identifier, $data) : Generator{
+			yield from $this->arenasSave($identifier, $data);
+		});
 	}
 
 	public function asyncSelect(string $query, array $args = []) : Generator{
@@ -44,23 +55,30 @@ class libasynqlDatabase implements Closable{
 		return yield Await::ONCE;
 	}
 
-	public function AreasSelectAll() : Generator{
-		return yield $this->asyncSelect(self::AREAS_SELECT_ALL);
+	public function asyncInsert(string $query, array $args = []) : Generator{
+		$this->connector->executeInsert($query, $args, yield, yield Await::REJECT);
+		return yield Await::ONCE;
 	}
 
-	public function AreasSelectId(string $id) : Generator{
-		return yield $this->asyncSelect(self::AREAS_SELECT_ID, ["id" => $id]);
+	public function arenasSelectAll() : Generator{
+		return yield $this->asyncSelect(self::ARENAS_SELECT_ALL);
 	}
 
-	public function AreasSelectDisplayName(string $displayName) : Generator{
-		return yield $this->asyncSelect(self::AREAS_SELECT_DISPLAYNAME, ["displayName" => $displayName]);
+	public function arenasSave(string $identifier, array $data) : Generator{
+		$data["identifier"] = $identifier;
+		return yield $this->asyncInsert(self::ARENAS_SAVE, $data);
 	}
 
-	public function AreasSelectWorldName(string $worldName) : Generator{
-		return yield $this->asyncSelect(self::AREAS_SELECT_WORLDNAME, ["worldName" => $worldName]);
+	public function arenasSelectId(string $id) : Generator{
+		return yield $this->asyncSelect(self::ARENAS_SELECT_ID, ["identifier" => $id]);
 	}
 
-	public function AreasCreate(string $id, string $displayName, string $worldName){
+	public function arenasSelectDisplayName(string $displayName) : Generator{
+		return yield $this->asyncSelect(self::ARENAS_SELECT_DISPLAYNAME, ["displayName" => $displayName]);
+	}
+
+	public function arenasSelectWorldName(string $worldName) : Generator{
+		return yield $this->asyncSelect(self::ARENAS_SELECT_WORLDNAME, ["worldName" => $worldName]);
 	}
 
 	public function close() : void{

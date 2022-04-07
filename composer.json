@@ -6,7 +6,8 @@
         "pocketmine/pocketmine-mp": "^4.2",
         "sof3/libasynql": "^4.0",
         "sof3/await-generator": "^3.4",
-        "friendsofphp/php-cs-fixer": "^3.8"
+        "friendsofphp/php-cs-fixer": "^3.8",
+        "sof3/await-std": "dev-master"
     },
     "autoload": {
         "psr-0": {

@@ -26,7 +26,7 @@ trait SingletonTrait{
 
 	protected function onInit() : void{ }
 
-	public static function init(Loader $plugin) : void{
+	final public static function init(Loader $plugin) : void{
 		(static::$instance = new self($plugin))->onInit();
 	}
 }

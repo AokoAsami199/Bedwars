@@ -7,20 +7,18 @@ namespace VietnamPMTeam\Bedwars\Arena;
 use pocketmine\Server;
 use pocketmine\utils\Filesystem;
 use pocketmine\world\World;
+use function mb_strtolower;
+use function preg_replace;
+use function str_replace;
 use function uniqid;
 
-class Arena{
+class Arena implements IArena{
 	protected ?World $clonedWorld = null;
 
 	public function __construct(
-		protected string $identifier,
 		protected string $displayName,
 		protected World $world
 	){
-	}
-
-	public function getIdentifier() : string{
-		return $this->identifier;
 	}
 
 	public function getDisplayName() : string{

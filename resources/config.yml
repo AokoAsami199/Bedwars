@@ -1,3 +1,6 @@
+# Save arena builder even when exiting
+save-builder: true
+
 database:
   # The database type. "json", "yml", "sqlite" and "mysql" are supported.
   type: sqlite
