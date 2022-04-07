@@ -3,7 +3,9 @@ save-builder: true
 
 database:
   # The database type. "json", "yml", "sqlite" and "mysql" are supported.
-  type: sqlite
+  type:
+    # Only "json" and "yml" are supported.
+    arena: json
 
   # Edit these settings only if you choose "sqlite".
   sqlite:

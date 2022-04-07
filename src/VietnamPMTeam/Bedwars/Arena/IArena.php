@@ -18,4 +18,6 @@ interface IArena{
 	public function cloneWorld() : void;
 
 	public function resetWorld() : void;
+
+	public function saveData();
 }

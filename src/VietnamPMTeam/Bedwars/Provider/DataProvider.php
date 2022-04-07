@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VietnamPMTeam\Bedwars\Provider;
 
+use InvalidArgumentException;
 use VietnamPMTeam\Bedwars\Arena\ArenaData;
 use VietnamPMTeam\Bedwars\Arena\ArenaManager;
 use VietnamPMTeam\Bedwars\Provider\Databases\Database;
@@ -20,11 +21,11 @@ final class DataProvider implements Closable{
 	protected Database $arenaDatabase;
 
 	protected function onInit() : void{
-		$arenaDBType = $this->getPlugin()->getConfig()->getNested("database.type");
+		$arenaDBType = $this->getPlugin()->getConfig()->getNested("database.type.arena");
 		$this->arenaDatabase = match ($arenaDBType) {
 			Database::TYPE_JSON => new JsonDatabase($this->plugin, Database::ARENAS),
 			Database::TYPE_YAML => new YamlDatabase($this->plugin, Database::ARENAS),
-			Database::TYPE_MYSQL, Database::TYPE_SQLITE => new libasynqlDatabase($this->plugin)
+			Database::TYPE_MYSQL, Database::TYPE_SQLITE => throw new InvalidArgumentException("SQL database is not supported yet"),
 		};
 		$this->loadArenas();
 	}
