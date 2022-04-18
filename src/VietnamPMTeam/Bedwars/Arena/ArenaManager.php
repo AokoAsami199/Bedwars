@@ -4,51 +4,32 @@ declare(strict_types=1);
 
 namespace VietnamPMTeam\Bedwars\Arena;
 
-use VietnamPMTeam\Bedwars\Utils\SingletonTrait;
-use function array_rand;
+use VietnamPMTeam\Bedwars\Database\Database;
 
 final class ArenaManager{
-	use SingletonTrait;
-
-	/** @var array<string, IArena> */
+	/** @var array<string, Arena> */
 	protected array $arenas = [];
+	protected Database $database;
+
+	public function __construct(){
+	}
 
 	/**
-	 * @return array<string, IArena>
+	 * @return array<string, Arena>
 	 */
 	public function getArenas() : array{
 		return $this->arenas;
 	}
 
-	public function getArena(string $identifier) : ?IArena{
+	public function getArena(string $identifier) : ?Arena{
 		return $this->arenas[$identifier] ?? null;
 	}
 
-	public function getArenaByName(string $displayName) : ?IArena{
-		foreach($this->arenas as $arena){
-			if($arena->getDisplayName() === $displayName){
-				return $arena;
-			}
-		}
-		return null;
-	}
-
-	public function getRandomArena() : ?IArena{
-		return empty($this->arenas) ? null : $this->arenas[array_rand($this->arenas)];
-	}
-
-	public function registerArena(string $identifier, IArena $arena) : void{
+	public function registerArena(string $identifier, Arena $arena) : void{
 		$this->arenas[$identifier] = $arena;
 	}
 
 	public function unregisterArena(string $identifier) : void{
 		unset($this->arenas[$identifier]);
-	}
-
-	public function createFromData(ArenaData $data) : Arena{
-		return new Arena(
-			$data->displayName,
-			$this->plugin->getServer()->getWorldManager()->getWorldByName($data->worldName)
-		);
 	}
 }

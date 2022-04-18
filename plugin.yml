@@ -1,11 +1,11 @@
 ---
 name: Bedwars
 version: 0.0.1
-main: VietnamPMTeam\Bedwars\Loader
+main: VietnamPMTeam\Bedwars\Bedwars
 api: 4.0.0
 description: A minigame plugin for PocketMine-MP
 
 permissions:
   bedwars.command:
-    default: op
+    default: true
 ...

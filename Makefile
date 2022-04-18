@@ -13,3 +13,6 @@ vendor/update:
 
 fmt: Makefile
 	$(PHP) $(BIN)/php-cs-fixer fix src
+
+analyse: Makefile
+	$(PHP) $(BIN)/phpstan analyse

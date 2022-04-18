@@ -4,10 +4,8 @@
     "type": "project",
     "require": {
         "pocketmine/pocketmine-mp": "^4.2",
-        "sof3/libasynql": "^4.0",
-        "sof3/await-generator": "^3.4",
         "friendsofphp/php-cs-fixer": "^3.8",
-        "sof3/await-std": "dev-master"
+        "sof3/libasynql": "^4.0"
     },
     "autoload": {
         "psr-0": {
@@ -22,5 +20,8 @@
         {
             "name": "NgLamVN"
         }
-    ]
+    ],
+    "require-dev": {
+        "phpstan/phpstan": "^1.5"
+    }
 }
